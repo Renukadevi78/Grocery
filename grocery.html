@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grocery List</title>
+    
+    <style>
+      body {
+        background-image: url(https://thumbs.dreamstime.com/b/organic-fresh-fruits-vegetable-grocery-shelves-blur-supermarket-background-organic-fresh-fruits-vegetable-grocery-271883012.jpg);
+        /* opacity: 0.2; */
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+      }
+
+      h1,
+      h2 {
+        color:white;
+      }
+
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 300px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        background-color:rgb(255, 0, 0);
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      #grocery-list {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      #grocery-list li {
+        background: #fff;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      #total-price {
+        font-weight: bold;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Grocery List</h1>
+    <form id="grocery-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required />
+
+      <label for="category">Category:</label>
+      <select id="category" required>
+        <option value="Fruits">Fruits</option>
+        <option value="Vegetables">Vegetables</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Bakery">Bakery</option>
+      </select>
+
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" required />
+
+      <label for="price">Price:</label>
+      <input type="number" id="price" required />
+
+      <button type="submit">Add Item</button>
+    </form>
+
+    <h2>Grocery List</h2>
+    <ul id="grocery-list"></ul>
+
+    <h2>Total Price: <span id="total-price">0</span></h2>
+
+    <script>
+      document
+        .getElementById("grocery-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const name = document.getElementById("name").value;
+          const category = document.getElementById("category").value;
+          const quantity = parseInt(document.getElementById("quantity").value);
+          const price = parseFloat(document.getElementById("price").value);
+
+          const listItem = document.createElement("li");
+          listItem.textContent = `${name} (${category}) - ${quantity} x $${price.toFixed(
+            2
+          )} = $${(quantity * price).toFixed(2)}`;
+
+          document.getElementById("grocery-list").appendChild(listItem);
+
+          updateTotalPrice();
+
+          document.getElementById("grocery-form").reset();
+        });
+
+      function updateTotalPrice() {
+        const listItems = document.querySelectorAll("#grocery-list li");
+        let totalPrice = 0;
+        listItems.forEach((item) => {
+          const itemText = item.textContent;
+          const itemTotalPrice = parseFloat(itemText.split("= $")[1]);
+          totalPrice += itemTotalPrice;
+        });
+        document.getElementById("total-price").textContent =
+          totalPrice.toFixed(2);
+      }
+    </script>
+  </body>
+</html>
